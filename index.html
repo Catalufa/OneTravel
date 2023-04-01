@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OneTravel</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#ffffff">
+</head>
+
+<body>
+  <section class="front">
+    <div class="front-intro" id="home">
+      <h2><i class="fa-solid fa-house"></i>&nbsp;&nbsp;&nbsp;OneTravel Dashboard</h2>
+      <p id="onelicensetype">Unlicensed OneTravel Account</p>
+    </div>
+    <div class="front-menu">
+      <div class="front-tiles">
+        <div class="front-tile" id="ticket">
+          <h2><i class="fa-solid fa-ticket"></i>&nbsp;&nbsp;&nbsp;My OneTicket</h2>
+        </div>
+        <div class="front-tile" id="license">
+          <h2><i class="fa-solid fa-user"></i>&nbsp;&nbsp;&nbsp;My OneLicense</h2>
+        </div>
+        <h4><i class="fa-solid fa-train-subway"></i><i class="fa-solid fa-bus-simple"></i><i
+            class="fa-solid fa-ferry"></i><i class="fa-solid fa-train"></i></h4>
+      </div>
+      <div class="front-ticket">
+        <h2 id="ticket-heading">No OneTicket Available</h2>
+        <p id="ticket-text">There are no OneTickets available on your OneLicense. This could mean that your OneLicense has expired.</p>
+        <i id="ticket-date"></i>
+        <div id="ticket-qr"></div>
+        <i>Network One Travel Tickets are valid on Arriva, Stagecoach, Go North East, Metro, Sunderland to Blaydon rail line and Shields ferry</i>
+        <h4><i class="fa-solid fa-train-subway"></i><i class="fa-solid fa-bus-simple"></i><i
+            class="fa-solid fa-ferry"></i><i class="fa-solid fa-train"></i></h4>
+      </div>
+      <div class="front-license">
+        <h2 id="license-heading">Checking OneLicense</h2>
+        <p id="license-text">Please wait while we check that your OneLicense is valid.</p>
+        <h4><i class="fa-solid fa-train-subway"></i><i class="fa-solid fa-bus-simple"></i><i
+            class="fa-solid fa-ferry"></i><i class="fa-solid fa-train"></i></h4>
+      </div>
+    </div>
+  </section>
+  <script src="script.js"></script>
+  <script src="encrypt.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+  <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+</body>
+
+</html>
