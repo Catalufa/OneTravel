@@ -1,28 +1,44 @@
 import QrScanner from './qr-scanner.min.js';
 
-function upload(filePath, fileContent, token) {
-  const owner = 'Catalufa';
-  const repo = 'OneTravel';
-  fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`, {
-    method: 'PUT',
+const owner = "Catalufa";
+const repo = "OneTravel";
+
+async function upload(filePath, fileContent, token) {
+  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
+  
+  const response = await fetch(url, {
+    method: "GET",
     headers: {
-      'Authorization': `token ${token}`,
-      'Content-Type': 'application/json'
+      "Authorization": `token ${token}`,
+      "Content-Type": "application/json"
+    }
+  });
+
+  let sha = "";
+  if (response.ok) {
+    const data = await response.json();
+    sha = data.sha;
+  }
+
+  const content = btoa(fileContent);
+  const body = JSON.stringify({
+    message: "Update file",
+    content: content,
+    sha: sha
+  });
+
+  const updateResponse = await fetch(url, {
+    method: "PUT",
+    headers: {
+      "Authorization": `token ${token}`,
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify({
-      message: 'Upload file',
-      content: btoa(fileContent)
-    })
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Failed to upload file: ${response.status} ${response.statusText}`);
-      }
-      console.log('File uploaded successfully!');
-    })
-    .catch(error => {
-      console.error('Error uploading file:', error);
-    });
+    body: body
+  });
+
+  if (!updateResponse.ok) {
+    throw new Error(`Failed to upload/update file ${filePath}: ${updateResponse.statusText}`);
+  }
 }
 
 // document.querySelector("#auth-btn").addEventListener("click", function(){
@@ -109,5 +125,5 @@ async function addUser(username,plan,token) {
     .then(response => response.text())
   var newMaster = JSON.parse(aesDecrypt(master, licenseKey, id))
   newMaster.push([enc.iv, enc.key])
-  upload("master", aesEncrypt(newMaster, licenseKey, id), token)
+  upload("master", aesEncrypt(newMaster.toString(), licenseKey, id), token)
 }
