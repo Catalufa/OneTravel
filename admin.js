@@ -21,11 +21,19 @@ async function upload(filePath, fileContent, token) {
   }
 
   const content = btoa(fileContent);
-  const body = JSON.stringify({
-    message: "Update file",
-    content: content,
-    if(sha){sha}
-  });
+  if (sha) {
+    const body = JSON.stringify({
+      message: "Update file",
+      content: content,
+      sha: sha
+    });
+  } else {
+    const body = JSON.stringify({
+      message: "Upload file",
+      content: content
+    });
+  }
+
 
   const updateResponse = await fetch(url, {
     method: "PUT",
