@@ -24,7 +24,7 @@ async function upload(filePath, fileContent, token) {
   const body = JSON.stringify({
     message: "Update file",
     content: content,
-    sha: sha
+    if(sha){sha}
   });
 
   const updateResponse = await fetch(url, {
