@@ -14,7 +14,7 @@ function aesEncrypt(data, key = generateKey(32), iv = generateKey(16)) {
     mode: CryptoJS.mode.CBC,
     padding: CryptoJS.pad.Pkcs7
   });
-  return cipher.toString();
+  return {data: cipher.toString(), key, iv};
 }
 
 function aesDecrypt(data, key, iv) {
