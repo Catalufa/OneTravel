@@ -80,7 +80,7 @@ document.querySelector("#admin").addEventListener("click", function() {
 })
 
 async function getTableData() {
-  const m = await fetch("master")
+  const m = await fetch("master?t=" + Date.now())
     .then(response => response.text())
   const masterData = JSON.parse(aesDecrypt(m, licenseKey, id));
   for (x of masterData) {
