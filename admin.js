@@ -87,7 +87,7 @@ async function getTableData() {
     const user = fetch("users/" + x[0])
       .then(response => response.text())
     const u = aesDecrypt(user, x[1], x[0])
-    addRow([u.username, u.plan, u.ticket[2]])
+    addRow([u.username, u.plan, u.ticket.expiry])
   }
 }
 
@@ -116,7 +116,7 @@ document.querySelector("#admin-new-user").addEventListener("click", function() {
 })
 
 async function addUser(username, plan) {
-  const newData = { username, plan, ticket: [] }
+  const newData = { username, plan, ticket: { name: null, validity: null, expiry: null, qrdata: null, notes: null } }
   const enc = aesEncrypt(JSON.stringify(newData))
   upload("users/" + enc.iv, enc.data)
   const master = await fetch("master?t=" + Date.now())

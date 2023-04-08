@@ -70,12 +70,12 @@ window.onload = async function() {
     tiles.style.display = "block";
     license.style.display = "none";
 
-    document.querySelector("#onelicensetype").innerText = ticketData[0];
-    document.querySelector("#ticket-heading").innerText = ticketData[1];
-    document.querySelector("#ticket-text").innerText = ticketData[2];
-    document.querySelector("#ticket-date").innerText = "Expires: " + ticketData[3];
+    document.querySelector("#onelicensetype").innerText = userData.plan;
+    document.querySelector("#ticket-heading").innerText = userData.ticket.name;
+    document.querySelector("#ticket-text").innerText = userData.ticket.validity;
+    document.querySelector("#ticket-date").innerText = "Expires: " + userData.ticket.expiry;
     new QRCode(document.getElementById("ticket-qr"), {
-      text: ticketData[4],
+      text: userData.ticket.qrdata,
       width: 220,
       height: 220,
       colorDark: "#000000",
