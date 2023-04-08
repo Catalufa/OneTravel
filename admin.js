@@ -39,60 +39,71 @@ async function upload(filePath, fileContents) {
     });
 }
 
-// document.querySelector("#auth-btn").addEventListener("click", function(){
-//   upload(prompt("Path"),prompt("Content"),prompt("Token"))
-// })
+async function get(filePath) {
+  const { data } = await octokit.rest.repos.getContent({
+    owner: owner,
+    repo: repo,
+    path: filePath
+  });
 
-document.querySelector("#admin").addEventListener("click", function() {
-  getTableData();
+  const content = data.content;
+  const decodedContent = atob(content);
+  return decodedContent;
+}
 
-  var qrOn = false;
-  const container = document.querySelector(".admin-qr-container")
-  const play = container.querySelector("i")
-  const video = container.querySelector("video")
-  const data = document.querySelector("#admin-qr-text")
+var qrOn = false;
+const container = document.querySelector(".admin-qr-container")
+const play = container.querySelector("i")
+const video = container.querySelector("video")
+const data = document.querySelector("#admin-qr-text")
 
-  const qrScanner = new QrScanner(
-    video,
-    result => {
-      data.value = result.data;
-      container.click();
-    },
-    {
-      returnDetailedScanResult: true
-    }
-  );
+const qrScanner = new QrScanner(
+  video,
+  result => {
+    data.value = result.data;
+    container.click();
+  },
+  {
+    returnDetailedScanResult: true
+  }
+);
 
-  container.addEventListener("click", function() {
-    if (qrOn) {
-      qrScanner.stop();
-      video.style.opacity = "0";
-      play.style.display = "block";
-      qrOn = false;
-    } else {
-      qrScanner.start();
-      video.style.opacity = "1";
-      play.style.display = "none";
-      qrOn = true;
-    }
-  })
-
+container.addEventListener("click", function() {
+  if (qrOn) {
+    qrScanner.stop();
+    video.style.opacity = "0";
+    play.style.display = "block";
+    qrOn = false;
+  } else {
+    qrScanner.start();
+    video.style.opacity = "1";
+    play.style.display = "none";
+    qrOn = true;
+  }
 })
 
+
+const table = document.querySelector(".admin-table");
+
 async function getTableData() {
-  const m = await fetch("master?t=" + Date.now())
-    .then(response => response.text())
+  for (let i = table.childNodes.length - 1; i > 0; i--) {
+    table.removeChild(table.childNodes[i]);
+  }
+  const m = await get("master")
   const masterData = JSON.parse(aesDecrypt(m, licenseKey, id));
   for (let x of masterData) {
-    const user = await fetch("users/" + x[0])
-      .then(response => response.text())
+    const user = await get("users/" + x[0])
     const u = JSON.parse(aesDecrypt(user, x[1], x[0]))
     addRow([u.username, u.plan, u.ticket.expiry])
   }
 }
 
+document.querySelector("#admin-refresh-table").addEventListener("click", function() {
+  getTableData();
+});
+
 function addRow(data, buttonMsg = "Go") {
-  const table = document.querySelector(".admin-table");
+
   var newItem = document.createElement("tr");
   newItem.innerHTML = `
             <td>
@@ -104,9 +115,6 @@ function addRow(data, buttonMsg = "Go") {
             <td>
               <div>${data[2]}</div>
             </td>
-            <td>
-              <div>${data[3]}</div>
-            </td>
             <td><button>${buttonMsg}</button></td>`
   table.appendChild(newItem)
 }
@@ -115,12 +123,22 @@ document.querySelector("#admin-new-user").addEventListener("click", function() {
   addUser(prompt("username"), prompt("plan"))
 })
 
+const updateToken = document.querySelector("#admin-token");
+const token = localStorage.getItem("token");
+if (token) {
+  getTableData();
+}
+updateToken.value = token;
+document.querySelector("#admin-token-update").addEventListener("click", function() {
+  localStorage.setItem("token", updateToken.value);
+  window.location.reload();
+})
+
 async function addUser(username, plan) {
   const newData = { username, plan, ticket: { name: null, validity: null, expiry: null, qrdata: null, notes: null } }
   const enc = aesEncrypt(JSON.stringify(newData))
   upload("users/" + enc.iv, enc.data)
-  const master = await fetch("master?t=" + Date.now())
-    .then(response => response.text())
+  const master = await get("master")
   var newMaster = JSON.parse(aesDecrypt(master, licenseKey, id))
   newMaster.push([enc.iv, enc.key])
   upload("master", aesEncrypt(JSON.stringify(newMaster), licenseKey, id).data)

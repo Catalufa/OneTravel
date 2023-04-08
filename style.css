@@ -98,7 +98,7 @@ html, body, .front, .front-tiles, .front-license, .front-ticket, .front-admin {
   opacity: 0;
 }
 
-#admin-qr-text {
+input {
   border: 0;
   padding: 10px;
   border-radius: 10px;
