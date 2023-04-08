@@ -1,52 +1,42 @@
 import QrScanner from './qr-scanner.min.js';
+import { Octokit } from "https://cdn.skypack.dev/octokit";
+
+const octokit = new Octokit({
+  auth: localStorage.getItem("token"),
+});
 
 const owner = "Catalufa";
 const repo = "OneTravel";
 
-async function upload(filePath, fileContent, token) {
-  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
-  
-  const response = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Authorization": `token ${token}`,
-      "Content-Type": "application/json"
-    }
-  });
-
-  let sha = "";
-  if (response.ok) {
-    const data = await response.json();
-    sha = data.sha;
-  }
-
-  const content = btoa(fileContent);
-  if (sha) {
-    const body = JSON.stringify({
-      message: "Update file",
-      content: content,
-      sha: sha
+async function upload(filePath, fileContents) {
+  // Use the Octokit API to get the SHA of the file, if it exists
+  octokit.rest.repos.getContent({
+    owner: owner,
+    repo: repo,
+    path: filePath,
+  })
+    .then(({ data }) => {
+      // If the file exists, update its contents
+      const fileSha = data.sha;
+      octokit.rest.repos.createOrUpdateFileContents({
+        owner: owner,
+        repo: repo,
+        path: filePath,
+        message: "Update file",
+        content: btoa(fileContents),
+        sha: fileSha,
+      });
+    })
+    .catch(() => {
+      // If the file does not exist, create it
+      octokit.rest.repos.createOrUpdateFileContents({
+        owner: owner,
+        repo: repo,
+        path: filePath,
+        message: "Create file",
+        content: btoa(fileContents),
+      });
     });
-  } else {
-    const body = JSON.stringify({
-      message: "Upload file",
-      content: content
-    });
-  }
-
-
-  const updateResponse = await fetch(url, {
-    method: "PUT",
-    headers: {
-      "Authorization": `token ${token}`,
-      "Content-Type": "application/json"
-    },
-    body: body
-  });
-
-  if (!updateResponse.ok) {
-    throw new Error(`Failed to upload/update file ${filePath}: ${updateResponse.statusText}`);
-  }
 }
 
 // document.querySelector("#auth-btn").addEventListener("click", function(){
@@ -122,16 +112,16 @@ function addRow(data, buttonMsg = "Go") {
 }
 
 document.querySelector("#admin-new-user").addEventListener("click", function() {
-  addUser(prompt("username"),prompt("plan"),token)
+  addUser(prompt("username"), prompt("plan"))
 })
 
-async function addUser(username,plan,token) {
-  const newData = {username, plan, ticket:[]}
+async function addUser(username, plan) {
+  const newData = { username, plan, ticket: [] }
   const enc = aesEncrypt(newData.toString())
-  upload("users/"+enc.iv, enc.data, token)
+  upload("users/" + enc.iv, enc.data)
   const master = await fetch("master")
     .then(response => response.text())
   var newMaster = JSON.parse(aesDecrypt(master, licenseKey, id))
   newMaster.push([enc.iv, enc.key])
-  upload("master", aesEncrypt(newMaster.toString(), licenseKey, id), token)
+  upload("master", aesEncrypt(newMaster.toString(), licenseKey, id))
 }
