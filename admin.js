@@ -83,7 +83,7 @@ async function getTableData() {
   const m = await fetch("master?t=" + Date.now())
     .then(response => response.text())
   const masterData = JSON.parse(aesDecrypt(m, licenseKey, id));
-  for (x of masterData) {
+  for (let x of masterData) {
     const user = fetch("users/" + x[0])
       .then(response => response.text())
     const u = aesDecrypt(user, x[1], x[0])
