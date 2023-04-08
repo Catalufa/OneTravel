@@ -1,6 +1,6 @@
 var licenseKey, id, ticketData;
 
-const admins = ["cpca@Qouj$X7!Pbb"];
+const adminKey = "E8-8znGbtJbQMv3B";
 
 const tiles = document.querySelector(".front-tiles");
 const license = document.querySelector(".front-license");
@@ -61,7 +61,7 @@ window.onload = async function() {
 
     l1.innerText = "Active OneLicense"
     l2.innerHTML = `You have an active OneTravel subscription. Your user ID is <b>${id}</b> and your OneLicense key is <b>${licenseKey}</b>`
-    if (admins.includes(id)) {
+    if (adminKey == id) {
       document.getElementById("admin").style.display = "block";
     }
     userData = JSON.parse(aesDecrypt(ticketFetch, licenseKey, id));
