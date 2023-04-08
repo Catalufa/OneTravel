@@ -86,8 +86,8 @@ container.addEventListener("click", function() {
 const table = document.querySelector(".admin-table");
 
 async function getTableData() {
-  for (let i = table.childNodes.length - 1; i > 0; i--) {
-    table.removeChild(table.childNodes[i]);
+  while (table.rows.length > 1) {
+    table.deleteRow(1);
   }
   const m = await get("master")
   const masterData = JSON.parse(aesDecrypt(m, licenseKey, id));
@@ -97,6 +97,10 @@ async function getTableData() {
     addRow([u.username, u.plan, u.ticket.expiry])
   }
 }
+
+document.querySelector("#admin").addEventListener("click", function() {
+  getTableData();
+});
 
 document.querySelector("#admin-refresh-table").addEventListener("click", function() {
   getTableData();
@@ -125,9 +129,6 @@ document.querySelector("#admin-new-user").addEventListener("click", function() {
 
 const updateToken = document.querySelector("#admin-token");
 const token = localStorage.getItem("token");
-if (token) {
-  getTableData();
-}
 updateToken.value = token;
 document.querySelector("#admin-token-update").addEventListener("click", function() {
   localStorage.setItem("token", updateToken.value);
