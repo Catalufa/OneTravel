@@ -119,7 +119,7 @@ async function addUser(username, plan) {
   const newData = { username, plan, ticket: [] }
   const enc = aesEncrypt(newData.toString())
   upload("users/" + enc.iv, enc.data)
-  const master = await fetch("master")
+  const master = await fetch("master?t=" + Date.now())
     .then(response => response.text())
   var newMaster = JSON.parse(aesDecrypt(master, licenseKey, id))
   newMaster.push([enc.iv, enc.key])
