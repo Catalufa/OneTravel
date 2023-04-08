@@ -117,7 +117,7 @@ document.querySelector("#admin-new-user").addEventListener("click", function() {
 
 async function addUser(username, plan) {
   const newData = { username, plan, ticket: [] }
-  const enc = aesEncrypt(newData.toString()).data
+  const enc = aesEncrypt(newData.toString())
   upload("users/" + enc.iv, enc.data)
   const master = await fetch("master")
     .then(response => response.text())
