@@ -84,7 +84,7 @@ async function getTableData() {
     .then(response => response.text())
   const masterData = JSON.parse(aesDecrypt(m, licenseKey, id));
   for (let x of masterData) {
-    const user = fetch("users/" + x[0])
+    const user = await fetch("users/" + x[0])
       .then(response => response.text())
     const u = aesDecrypt(user, x[1], x[0])
     addRow([u.username, u.plan, u.ticket.expiry])
