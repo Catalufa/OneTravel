@@ -122,18 +122,18 @@ document.querySelector("#admin-refresh-table").addEventListener("click", functio
 function addRow(data) {
   var newItem = document.createElement("tr");
   newItem.setAttribute("id", data[4])
-  
+
   var edit = document.createElement("button");
   edit.innerHTML = "Edit";
   edit.addEventListener("click", editUser, false)
-  
+
   var update = document.createElement("button");
   update.innerHTML = "Update";
   update.addEventListener("click", (evt) => {
     const rowData = evt.currentTarget.parentElement.parentElement.querySelectorAll("input");
-    updateUser(data[4], data[5], data[6], {username: rowData[0].value, plan: rowData[1].value})
+    updateUser(data[4], data[5], data[6], { username: rowData[0].value, plan: rowData[1].value })
   })
-  
+
   var remove = document.createElement("button");
   remove.innerHTML = "Remove";
   remove.addEventListener("click", function() {
@@ -144,17 +144,17 @@ function addRow(data) {
   distribute.innerHTML = "Distribute";
   distribute.addEventListener("click", (evt) => {
     updateUser(data[4], data[5], data[6],
-               {
-                 ticket: {
-                   name: document.querySelector("#admin-ticket-name").value,
-                   validity: document.querySelector("#admin-ticket-validity").value,
-                   expiry: document.querySelector("#admin-ticket-expiry").value,
-                   qrdata: document.querySelector("#admin-qr-text").value
-                 }
-               }
-              )
+      {
+        ticket: {
+          name: document.querySelector("#admin-ticket-name").value,
+          validity: document.querySelector("#admin-ticket-validity").value,
+          expiry: document.querySelector("#admin-ticket-expiry").value,
+          qrdata: document.querySelector("#admin-qr-text").value
+        }
+      }
+    )
   })
-  
+
   newItem.innerHTML = `
             <td>
               <div>${data[0]}</div>
@@ -176,14 +176,14 @@ function addRow(data) {
   table.lastChild.lastChild.appendChild(distribute)
 }
 
-function editUser(evt){
+function editUser(evt) {
   const active = evt.currentTarget.parentElement.parentElement;
   var newName = document.createElement("input");
-  newName.value = active.children[0].children[0].innerHTML
+  newName.value = active.children[0].children[0].innerText
   active.children[0].children[0].remove()
   active.children[0].appendChild(newName)
   var newType = document.createElement("input");
-  newType.value = active.children[1].children[0].innerHTML
+  newType.value = active.children[1].children[0].innerText
   active.children[1].children[0].remove()
   active.children[1].appendChild(newType)
 }
@@ -227,7 +227,7 @@ async function removeUser(removeId) {
   var newMaster = JSON.parse(aesDecrypt(master, licenseKey, id));
   for (let x of newMaster) {
     if (x[0] == removeId) {
-      newMaster.splice(newMaster.indexOf(x),1);
+      newMaster.splice(newMaster.indexOf(x), 1);
     }
   }
   await upload("master", aesEncrypt(JSON.stringify(newMaster), licenseKey, id).data)

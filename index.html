@@ -18,7 +18,7 @@
 <body>
   <section class="front">
     <div class="front-intro" id="home">
-      <h2><i class="fa-solid fa-house"></i>&nbsp;&nbsp;&nbsp;<b id="dashboard-heading">Loading...</b></h2>
+      <h2><i class="fa-solid fa-house"></i>&nbsp;&nbsp;&nbsp;<b id="dashboard-heading">OneTravel Dashboard</b></h2>
       <p id="onelicensetype">Unlicensed OneTravel Account</p>
     </div>
     <div class="front-menu">
@@ -52,15 +52,15 @@
             </div>
             <div>
               <h3>0</h3>
-              <p>days</p>
+              <p>hours</p>
             </div>
             <div>
               <h3>0</h3>
-              <p>days</p>
+              <p>minutes</p>
             </div>
             <div>
               <h3>0</h3>
-              <p>days</p>
+              <p>seconds</p>
             </div>
           </div>
         </div>
@@ -100,11 +100,18 @@
       </div>
     </div>
   </section>
-  <script src="script.js?v=0.0.2"></script>
+  <script src="script.js?v=0.0.7"></script>
   <script src="encrypt.js?v=0.0.2"></script>
   <script type="module" src="admin.js?v=0.0.2" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
   <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+      });
+    }
+  </script>
 </body>
 
 </html>
