@@ -18,7 +18,7 @@
 <body>
   <section class="front">
     <div class="front-intro" id="home">
-      <h2><i class="fa-solid fa-house"></i>&nbsp;&nbsp;&nbsp;OneTravel Dashboard</h2>
+      <h2><i class="fa-solid fa-house"></i>&nbsp;&nbsp;&nbsp;<b id="dashboard-heading">Loading...</b></h2>
       <p id="onelicensetype">Unlicensed OneTravel Account</p>
     </div>
     <div class="front-menu">
@@ -36,13 +36,34 @@
             class="fa-solid fa-ferry"></i><i class="fa-solid fa-train"></i></h4>
       </div>
       <div class="front-ticket">
-        <h2 id="ticket-heading">No OneTicket Available</h2>
-        <p id="ticket-text">There are no OneTickets available on your OneLicense. This could mean that your OneLicense
-          has expired.</p>
-        <i id="ticket-date"></i>
         <div id="ticket-qr"></div>
-        <i>Network One Travel Tickets are valid on Arriva, Stagecoach, Go North East, Metro, Sunderland to Blaydon rail
-          line and Shields ferry</i>
+        <div class="ticket-details">
+          <h2 id="ticket-heading">No OneTicket Available</h2>
+          <p id="ticket-text">There are no OneTickets available on your OneLicense. This could mean that your OneLicense
+            has expired.</p>
+        </div>
+        <div class="ticket-timer">
+          <h5 id="ticket-date"></h5>
+          <div class="ticket-timer-live">
+            <div>
+              <h3>0</h3>
+              <p>days</p>
+            </div>
+            <div>
+              <h3>0</h3>
+              <p>days</p>
+            </div>
+            <div>
+              <h3>0</h3>
+              <p>days</p>
+            </div>
+            <div>
+              <h3>0</h3>
+              <p>days</p>
+            </div>
+          </div>
+        </div>
+
         <h4><i class="fa-solid fa-train-subway"></i><i class="fa-solid fa-bus-simple"></i><i
             class="fa-solid fa-ferry"></i><i class="fa-solid fa-train"></i></h4>
       </div>
@@ -60,26 +81,16 @@
           <video id="admin-qr"></video>
         </div>
         <input type="text" id="admin-qr-text" placeholder="Ticket data">
+        <input type="text" id="admin-ticket-name" placeholder="Name" value="North East, Network One Zone 1 & 2">
+        <input type="text" id="admin-ticket-validity" placeholder="Type" value="Adult Week Network One Zone 1 & 2">
+        <input type="date" id="admin-ticket-expiry" placeholder="Expiry date">
         <table class="admin-table">
           <tr>
             <th><i class="fa-solid fa-user"></i></th>
+            <th><i class="fa-solid fa-id-card"></i></th>
             <th><i class="fa-solid fa-ticket"></i></th>
             <th><i class="fa-solid fa-clock"></i></th>
             <th><i class="fa-solid fa-play"></i></th>
-          </tr>
-          <tr>
-            <td>
-              <div>No token</div>
-            </td>
-            <td>
-              <div>No token</div>
-            </td>
-            <td>
-              <div>No token</div>
-            </td>
-            <td>
-              <div>No token</div>
-            </td>
           </tr>
         </table>
         <button id="admin-refresh-table">Refresh table</button>

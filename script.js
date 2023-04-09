@@ -48,7 +48,7 @@ window.onload = async function() {
     l1.innerText = "No OneLicense Detected"
     l2.innerText = "You don't have an active OneTravel subscription. To activate your license, click the activation link."
   } else {
-    ticketFetch = await fetch("users/" + id)
+    ticketFetch = await fetch("https://api.github.com/repos/Catalufa/OneTravel/contents/users/" + id + "?t=" + Date.now())
       .then(response => {
         if (response.status == 404) {
           l1.innerText = "Invalid OneLicense";
@@ -57,7 +57,8 @@ window.onload = async function() {
         }
         return response
       })
-      .then(response => response.text())
+      .then(response => response.json())
+      .then(data => atob(data.content))
 
     l1.innerText = "Active OneLicense"
     l2.innerHTML = `You have an active OneTravel subscription. Your user ID is <b>${id}</b> and your OneLicense key is <b>${licenseKey}</b>`
@@ -70,10 +71,7 @@ window.onload = async function() {
     tiles.style.display = "block";
     license.style.display = "none";
 
-    document.querySelector("#onelicensetype").innerText = userData.plan;
-    document.querySelector("#ticket-heading").innerText = userData.ticket.name;
-    document.querySelector("#ticket-text").innerText = userData.ticket.validity;
-    document.querySelector("#ticket-date").innerText = "Expires: " + userData.ticket.expiry;
+    document.querySelector("#dashboard-heading").innerText = userData.username.split(" ")[0] + "'s Dashboard";
     new QRCode(document.getElementById("ticket-qr"), {
       text: userData.ticket.qrdata,
       width: 220,
@@ -81,5 +79,38 @@ window.onload = async function() {
       colorDark: "#000000",
       colorLight: "#ffffff"
     });
+    document.querySelector("#onelicensetype").innerText = userData.plan;
+    document.querySelector("#ticket-heading").innerText = userData.ticket.name;
+    document.querySelector("#ticket-text").innerText = userData.ticket.validity;
+    var expiry = new Date(userData.ticket.expiry);
+    document.querySelector("#ticket-date").innerText = "Valid till " + expiry.toLocaleDateString("en-GB", { day: 'numeric', month: 'short', year: 'numeric' });
+
+    var _second = 1000;
+    var _minute = _second * 60;
+    var _hour = _minute * 60;
+    var _day = _hour * 24;
+    var timer;
+
+    function showRemaining() {
+      var now = new Date();
+      var distance = expiry - now;
+      if (distance < 0) {
+        clearInterval(timer);
+        return;
+      }
+      var days = Math.floor(distance / _day);
+      var hours = Math.floor((distance % _day) / _hour);
+      var minutes = Math.floor((distance % _hour) / _minute);
+      var seconds = Math.floor((distance % _minute) / _second);
+
+      var o = document.querySelectorAll(".ticket-timer-live h3");
+      o[0].innerHTML = days;
+      o[1].innerHTML = hours;
+      o[2].innerHTML = minutes;
+      o[3].innerHTML = seconds;
+    }
+
+    timer = setInterval(showRemaining, 1000);
+
   }
 };
