@@ -24,6 +24,11 @@ document.getElementById("ticket").addEventListener("click", function() {
   ticket.style.display = "flex";
 })
 
+document.querySelector("#ticket-close").addEventListener("click", function() {
+  tiles.style.display = "block";
+  ticket.style.display = "none";
+})
+
 document.getElementById("admin").addEventListener("click", function() {
   tiles.style.display = "none";
   admin.style.display = "flex";

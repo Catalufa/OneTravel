@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OneTravel</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link href="style.css?v=0.0.2" rel="stylesheet" type="text/css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap"
@@ -36,6 +36,7 @@
             class="fa-solid fa-ferry"></i><i class="fa-solid fa-train"></i></h4>
       </div>
       <div class="front-ticket">
+        <i id="ticket-close" class="fa-solid fa-close"></i>
         <div id="ticket-qr"></div>
         <div class="ticket-details">
           <h2 id="ticket-heading">No OneTicket Available</h2>
@@ -63,9 +64,6 @@
             </div>
           </div>
         </div>
-
-        <h4><i class="fa-solid fa-train-subway"></i><i class="fa-solid fa-bus-simple"></i><i
-            class="fa-solid fa-ferry"></i><i class="fa-solid fa-train"></i></h4>
       </div>
       <div class="front-license">
         <h2 id="license-heading">Checking OneLicense</h2>
@@ -102,9 +100,9 @@
       </div>
     </div>
   </section>
-  <script src="script.js"></script>
-  <script src="encrypt.js"></script>
-  <script type="module" src="admin.js" defer></script>
+  <script src="script.js?v=0.0.2"></script>
+  <script src="encrypt.js?v=0.0.2"></script>
+  <script type="module" src="admin.js?v=0.0.2" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
   <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 </body>
