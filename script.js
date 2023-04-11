@@ -102,7 +102,7 @@ function updatePage(userData) {
   document.querySelector("#ticket-heading").innerText = userData.ticket.name;
   document.querySelector("#ticket-text").innerText = userData.ticket.validity;
   var expiry = new Date(userData.ticket.expiry);
-  document.querySelector("#ticket-date").innerText = "Valid till " + expiry.toLocaleDateString("en-GB", { day: 'numeric', month: 'short', year: 'numeric' });
+  document.querySelector("#ticket-date").innerText = "Carnet is valid till " + expiry.toLocaleDateString("en-GB", { day: 'numeric', month: 'short', year: 'numeric' });
 
   var _second = 1000;
   var _minute = _second * 60;
